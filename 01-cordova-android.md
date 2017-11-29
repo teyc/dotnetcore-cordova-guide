@@ -27,23 +27,23 @@ Contrary to most advice, you do not need to install Android Studio.
        
 2. PowerShell to download 
 
-    wget https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip -OutFile sdk-tools-windows.zip
+       wget https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip -OutFile sdk-tools-windows.zip
     
-    Expand-Archive sdk-tools-windows.zip
-    
-    cd sdk-tools-windows
+       Expand-Archive sdk-tools-windows.zip
     
 3. Use sdkmanager to download other dependencies
 
-     # create an empty repositories.cfg file (or sdkmanager will barf)
-     $repositoriesPath = "${env:HOMEPATH}\.android\repositories.cfg"
-     If (-Not (Test-Path $repositoriesPath))
-     {
+       # create an empty repositories.cfg file (or sdkmanager will barf)
+       $repositoriesPath = "${env:HOMEPATH}\.android\repositories.cfg"
+       If (-Not (Test-Path $repositoriesPath))
+       {
          Set-Content $repositoriesPath ""
-     }
+       }
      
-     # Updates list of files, EULA agreement
-     .\tools\bin\sdkmanager.bat --update
+       cd sdk-tools-windows
+    
+       # Updates list of files, EULA agreement
+       .\tools\bin\sdkmanager.bat --update
      
      
      .\tools\bin\sdkmanager.bat platforms;android-26
