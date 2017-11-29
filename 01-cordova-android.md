@@ -25,7 +25,7 @@ Contrary to most advice, you do not need to install Android Studio.
            [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::User)
        }
        
-2. PowerShell to download 
+2. PowerShell to download Android SDK
 
        wget https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip -OutFile sdk-tools-windows.zip
     
@@ -46,7 +46,9 @@ Contrary to most advice, you do not need to install Android Studio.
        .\tools\bin\sdkmanager.bat --update
      
      
-     .\tools\bin\sdkmanager.bat platforms;android-26
+4. Cordova requires `android-26`
+
+        .\tools\bin\sdkmanager.bat "platforms;android-26"
 
    
         
