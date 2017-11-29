@@ -45,12 +45,20 @@ Contrary to most advice, you do not need to install Android Studio.
        # Updates list of files, EULA agreement
        .\tools\bin\sdkmanager.bat --update
      
-     
+       cd ..
+       
 4. Cordova requires `android-26`
 
         .\tools\bin\sdkmanager.bat "platforms;android-26"
 
+5. Install NodeJS
+
+       wget https://nodejs.org/dist/v8.9.1/node-v8.9.1-x86.msi -OutFile node-v8.9.1-x86.msi
+       msiexec /i node-v8.9.1-x86.msi
+    
+6. Install Cordova
+
+       npm i cordova -g
+       
+
    
-        
-    
-    
