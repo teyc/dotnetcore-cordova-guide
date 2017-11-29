@@ -59,6 +59,15 @@ Contrary to most advice, you do not need to install Android Studio.
 6. Install Cordova
 
        npm i cordova -g
-       
 
-   
+7. Install Gradle
+
+       wget https://services.gradle.org/distributions/gradle-4.3.1-bin.zip -Outfile gradle.zip
+       Expand-Archive gradle.zip -DestinationPath C:\
+       $gradleBinPath = "C:\Gradle-4.3.1\bin"
+       If ($env:Path.Split(';') -notcontains $gradleBinPath)
+       {
+           $env:Path = "${env:PATH};$gradleBinPath"
+           [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::User)
+       }
+       
