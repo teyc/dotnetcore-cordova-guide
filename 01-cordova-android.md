@@ -16,6 +16,9 @@ Once you have successfully set up the environment, you can retrace the steps but
 
 Contrary to most advice, you do not need to install Android Studio.
 
+Setting up Cordova
+-------------------
+
 1. Install NodeJS (32 bit)
 
    I suggest you use 32bit node because some teams use Node that comes with Visual Studio, which is 32 bits.
@@ -29,13 +32,16 @@ Contrary to most advice, you do not need to install Android Studio.
 
        npm i cordova@7.1.0 -g
 
-3. Manually download JDK 8 (There is no official support for JDK 9 for Android)
+Setting up Android
+-------------------
+
+1. Manually download JDK 8 (There is no official support for JDK 9 for Android)
    from [Oracle](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
    Select `jdk-8u152-windows-x64.exe`. Once downloaded, you can install it from the command line.
    
        jdk.exe /s ADDLOCAL="ToolsFeature"
    
-4. Set JAVA_HOME and path
+2. Set JAVA_HOME and path
 
        $jdk = gci 'C:\Program Files\Java\jdk*'  | sort LastWriteTime | Select-Object -Last 1
        $jdkHome = $jdk.FullName
@@ -51,13 +57,13 @@ Contrary to most advice, you do not need to install Android Studio.
            [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::User)
        }
        
-5. PowerShell to download Android SDK
+3. PowerShell to download Android SDK
 
        wget https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip -OutFile sdk-tools-windows.zip
     
        Expand-Archive sdk-tools-windows.zip
     
-3. Use sdkmanager to download other dependencies
+4. Use sdkmanager to download other dependencies
 
        # create an empty repositories.cfg file (or sdkmanager will barf)
        $repositoriesPath = "${env:HOMEPATH}\.android\repositories.cfg"
@@ -66,18 +72,18 @@ Contrary to most advice, you do not need to install Android Studio.
          Set-Content $repositoriesPath ""
        }
      
+       
+5. Cordova requires `android-26`
+
        cd sdk-tools-windows
     
-       # Updates list of files, EULA agreement
-       .\tools\bin\sdkmanager.bat --update
-     
-       cd ..
-       
-4. Cordova requires `android-26`
+       .\tools\bin\sdkmanager.bat "platforms;android-26"
+       .\tools\bin\sdkmanager.bat "platform-tools"
 
-        .\tools\bin\sdkmanager.bat "platforms;android-26"
+       # Sign EULA agreement
+       .\tools\bin\sdkmanager.bat --licenses 
 
-7. Install Gradle and add it to the PATH
+6. Install Gradle and add it to the PATH
 
    Android Studio ships with Gradle, and Cordova will look for the Android Studio's version, falling back
    to your locally installed one. However, Android Studio is 1 GB download. We suggest you install Gradle manually.
@@ -92,3 +98,26 @@ Contrary to most advice, you do not need to install Android Studio.
            [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::User)
        }
        
+Setting up Emulator (optional)
+---------------------------------
+
+ 1. Download system image to `$ANDROID_HOME\system-images\...`, sign the EULA
+
+        tools\bin\sdkmanager.bat "system-images;android-26;google_apis;x86"
+        tools\bin\sdkmanager.bat --licenses
+ 
+ 2. Download Intel HAXM and install it manually
+ 
+        tools\bin\sdkmanager.bat "extras;intel;Hardware_Accelerated_Execution_Manager"
+        pushd extras\intel\Hardware_Accelerated_Execution_Manager
+        .\silent-install.bat
+        popd
+        
+ 3. Create virtual device
+ 
+        tools\bin\avdmanager create avd -n "GoogleApisx86" --package "system-images;android-26;google_apis;x86" --abi "google_apis/x86"
+ 
+ 4. Disable Hyper-V with PowerShell
+ 
+        Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All
+        
